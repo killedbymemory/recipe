@@ -1,0 +1,12 @@
+{
+  "name": "recipe",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Leonardo Situmorang <leonardo.situmorang@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0"
+  }
+}
