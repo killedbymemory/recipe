@@ -24,14 +24,12 @@
       <div class="recipe-container">
         <div class="recipe-img-content">
           <img src={props.image} />
-          <div class="recipe-rating">{props.rating}</div>
+          {props.rating >= 4 && <div class="recipe-rating">{props.rating}</div>}
         </div>
         <div class="recipe-content">
           <span class="recipe-title overflow-ellipsis">{props.name}</span>
           <span class="recipe-author overflow-ellipsis">By. {props.creator}</span>
-          <p class="recipe-short-description">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis mauris in est eleifend sodales. Ut nisi est, vestibulum at massa non, vehicula dignissim nisl. Duis bibendum nulla vitae est eleifend euismod. Proin faucibus nulla vel laoreet malesuada. Quisque accumsan quam nec odio rhoncus, quis bibendum augue malesuada. Fusce pellentesque venenatis neque efficitur ultricies. Aliquam erat volutpat. Suspendisse eu mauris consequat magna molestie sodales vitae id ligula. Nam sed dui elit. Proin magna risus, posuere eget aliquet sit amet, laoreet ut ante. Sed quis massa nulla. Aliquam mattis dolor sed laoreet fermentum. Donec non mauris nunc.
-          </p>
+          <p class="recipe-short-description">{props.review}</p>
         </div>
       </div>
 
@@ -67,7 +65,19 @@
         .then(result => {
           const recipes = result && result.recipe || [];
           const hasChicken = recipe => (recipe.ingredients || []).indexOf('Chicken') >= 0;
-          return resolve(recipes.filter(hasChicken));
+          const byRatingDesc = (recipeA, recipeB) => {
+            if (recipeA.rating > recipeB.rating) {
+              return -1;
+            }
+
+            if (recipeA.rating < recipeB.rating) {
+              return 1;
+            }
+
+            return 0;
+          };
+
+          return resolve(recipes.filter(hasChicken).sort(byRatingDesc));
         });
     });
 
