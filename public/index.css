@@ -28,17 +28,19 @@ body, html {
 }
 
 .recipe-list {
-  padding: 17px;
+  padding-top: 7px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .recipe-container {
-  width: 47%;
-  float: left;
-  margin-right: 5px;
+  width: 159px;
+  margin: 10px;
   height: 253px;
   border-radius: 5px;
   border: 1px solid #d9d9d9;
-  margin-bottom: 12px;
 }
 
   .recipe-img-content {
@@ -52,6 +54,7 @@ body, html {
       border-top-right-radius: 5px;
       height: 100%;
       width: 100%;
+      object-fit: cover;
     }
 
     .rating-container {
