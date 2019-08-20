@@ -20,14 +20,15 @@
         <h1>{props.title}</h1>
       </div>
 
-    const Recipe = () =>
+    const Recipe = (props) =>
       <div class="recipe-container">
-        <div class="recipe-img">
-          <div class="recipe-rating">5.0</div>
+        <div class="recipe-img-content">
+          <img src={props.image} />
+          <div class="recipe-rating">{props.rating}</div>
         </div>
         <div class="recipe-content">
-          <span class="recipe-title">Parmesan Panko Chicken</span>
-          <span class="recipe-author">By. Alisha</span>
+          <span class="recipe-title overflow-ellipsis">{props.name}</span>
+          <span class="recipe-author overflow-ellipsis">By. {props.creator}</span>
           <p class="recipe-short-description">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis mauris in est eleifend sodales. Ut nisi est, vestibulum at massa non, vehicula dignissim nisl. Duis bibendum nulla vitae est eleifend euismod. Proin faucibus nulla vel laoreet malesuada. Quisque accumsan quam nec odio rhoncus, quis bibendum augue malesuada. Fusce pellentesque venenatis neque efficitur ultricies. Aliquam erat volutpat. Suspendisse eu mauris consequat magna molestie sodales vitae id ligula. Nam sed dui elit. Proin magna risus, posuere eget aliquet sit amet, laoreet ut ante. Sed quis massa nulla. Aliquam mattis dolor sed laoreet fermentum. Donec non mauris nunc.
           </p>
@@ -36,13 +37,11 @@
 
     class RecipeApp extends React.Component {
       render() {
-        const recipes = [{}, {}, {}];
-
         return (
           <>
             <Header title="Recipe" />
             <div class="recipe-list">
-              {recipes.map(recipe => <Recipe {...recipe} />)}
+              {this.props.recipes.map(recipe => <Recipe {...recipe} />)}
             </div>
           </>
         );
@@ -51,10 +50,34 @@
   </script>
 
   <script type="text/babel">
-    ReactDOM.render(
-      <RecipeApp />,
-      document.getElementById('root')
-    );
+    const getRecipes = () => new Promise((resolve, reject) => {
+      const handleError = err => {
+        console.error(err);
+      }
+
+      const _getRecipes = fetch('/recipe.json');
+
+      _getRecipes.catch(err => {
+        console.error(err);
+        return reject(err);
+      });
+
+      _getRecipes
+        .then(response => response.json())
+        .then(result => {
+          const recipes = result && result.recipe || [];
+          const hasChicken = recipe => (recipe.ingredients || []).indexOf('Chicken') >= 0;
+          return resolve(recipes.filter(hasChicken));
+        });
+    });
+
+    const startApp = (recipes) =>
+      ReactDOM.render(
+        <RecipeApp recipes={recipes} />,
+        document.getElementById('root')
+      );
+
+    getRecipes().then(startApp);
   </script>
 </body>
 </html>
