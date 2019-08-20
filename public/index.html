@@ -20,11 +20,17 @@
         <h1>{props.title}</h1>
       </div>
 
+    const Rating = (props) =>
+      <div class="rating-container">
+        <span>{props.value}</span>
+      </div>
+
+
     const Recipe = (props) =>
       <div class="recipe-container">
         <div class="recipe-img-content">
           <img src={props.image} />
-          {props.rating >= 4 && <div class="recipe-rating">{props.rating}</div>}
+          {props.rating >= 4 && <Rating value={props.rating} />}
         </div>
         <div class="recipe-content">
           <span class="recipe-title overflow-ellipsis">{props.name}</span>
@@ -53,7 +59,7 @@
         console.error(err);
       }
 
-      const _getRecipes = fetch('/recipe.json');
+      const _getRecipes = fetch('https://api.myjson.com/bins/171v5n');
 
       _getRecipes.catch(err => {
         console.error(err);
